@@ -50,6 +50,16 @@ namespace Slimulator {
             return outbm;
         }
 
+        public Point GetPoint(int x, int y) {
+            if (x < 0 || x >= _width || y < 0 || y >= _height) return new Point(PointType.Wall);
+            return points[x][y];
+        }
+
+        public PointType GetPointType(int x, int y) {
+            if (x < 0 || x >= _width || y < 0 || y >= _height) return PointType.Wall;
+            return points[x][y].GetType();
+        }
+
         public void TextLog() {
             Console.Write('\n');
             for (int x = 0; x < _width; x++) {
