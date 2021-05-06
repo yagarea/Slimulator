@@ -16,6 +16,9 @@ x64/
 [Bb]in/
 [Oo]bj/
 
+# Video
+*.mp4
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
