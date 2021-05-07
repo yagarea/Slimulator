@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace Slimulator {
@@ -11,7 +12,7 @@ namespace Slimulator {
 
         private readonly int _width;
         private readonly Point[][] points;
-        
+
         private PointType TypeOfColor(Color c) {
             return c.R switch {
                 0 when c.G == 0 && c.B == 0 => PointType.Wall,
@@ -31,14 +32,16 @@ namespace Slimulator {
         }
 
         public Space(string inputPath) {
+            Console.WriteLine($"Loading file {inputPath}");
             Bitmap bm = new Bitmap(inputPath);
             _height = bm.Height;
             _width = bm.Width;
             points = new Point[_width][];
             for (int x = 0; x < _width; x++) {
                 points[x] = new Point[_height];
-                for (int y = 0; y < _height; y++) points[x][y] = new Point(TypeOfColor(bm.GetPixel(x, y)));
+                for (int y = 0; y < _height; y++) points[x][y] = new Point(x, y, TypeOfColor(bm.GetPixel(x, y)));
             }
+            Console.WriteLine($"Space constructed [{_height}x{_width}]");
         }
 
         public Bitmap ExportBitmap() {
@@ -50,14 +53,43 @@ namespace Slimulator {
             return outbm;
         }
 
+        private bool IsInBound(int x, int y) {
+            return x < 0 || x >= _width || y < 0 || y >= _height;
+        }
+
         public Point GetPoint(int x, int y) {
-            if (x < 0 || x >= _width || y < 0 || y >= _height) return new Point(PointType.Wall);
+            if (IsInBound(x, y)) return new Point(x, y, PointType.Wall);
             return points[x][y];
         }
 
         public PointType GetPointType(int x, int y) {
-            if (x < 0 || x >= _width || y < 0 || y >= _height) return PointType.Wall;
+            if (IsInBound(x, y)) return PointType.Wall;
             return points[x][y].GetType();
+        }
+
+        private static int VarageOutoint(Space s, int x, int y) {
+            short elementCount = 0;
+            int sum = 0;
+            for (int xShift = -1; xShift <= 1; xShift++) {
+                for (int yShift = -1; yShift <= 1; yShift++) {
+                }
+            }
+
+            return sum / elementCount;
+        }
+
+        public HashSet<Point> GetAccessibleNeighbours(int x, int y) {
+            HashSet<Point> neighbours = new HashSet<Point>();
+            for (int shiftX = -1; shiftX <= 1; shiftX++) {
+                for (int shiftY = -1; shiftY <= 1; shiftY++) {
+                    if (GetPointType(x + shiftX, y + shiftY) != PointType.Wall &&
+                        GetPointType(x + shiftX, y + shiftY) != PointType.Slime) {
+                        neighbours.Add(GetPoint(x + shiftX, y + shiftY));
+                    }
+                }
+            }
+
+            return neighbours;
         }
 
         public void TextLog() {
