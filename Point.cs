@@ -4,7 +4,8 @@ using System.Threading;
 namespace Slimulator {
     public enum PointType {
         Wall,
-        Space,
+        UnexploredSpace,
+        ExploredSpace,
         Slime,
         Food
     };
@@ -13,6 +14,10 @@ namespace Slimulator {
         private PointType _type;
         private int _slimeAffinity;
         private int x;
+        private int y;
+        private int age;
+
+        public int Age => age;
 
         public PointType Type => _type;
 
@@ -22,14 +27,14 @@ namespace Slimulator {
 
         public int Y => y;
 
-        private int y;
 
         public Point(int x, int y,PointType pt) {
             _type = pt;
             this.x = x;
             this.y = y;
+            age = 0;
             switch (pt) {
-                case PointType.Space:
+                case PointType.UnexploredSpace:
                     _slimeAffinity = 10;
                     break;
                 case PointType.Wall:
@@ -47,16 +52,22 @@ namespace Slimulator {
         public Point(int x, int y, PointType pt, int lop) {
             this.x = x;
             this.y = y;
+            age = 0;
             _type = pt;
             _slimeAffinity = lop;
         }
 
         public void SetType(PointType pt) {
             this._type = pt;
+            this.age = 0;
         }
         
         public int GetSlimeAffinity() => _slimeAffinity;
         public new PointType GetType() => _type;
+
+        public void GetOlder() {
+            age++;
+        }
         
     }
 }
