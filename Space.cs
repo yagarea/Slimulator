@@ -18,7 +18,7 @@ namespace Slimulator {
                 0 when c.G == 0 && c.B == 0 => PointType.Wall,
                 255 when c.G == 0 && c.B == 0 => PointType.Food,
                 255 when c.G == 255 && c.B == 0 => PointType.Slime,
-                _ => PointType.Space
+                _ => PointType.UnexploredSpace
             };
         }
 
@@ -67,17 +67,6 @@ namespace Slimulator {
             return points[x][y].GetType();
         }
 
-        private static int VarageOutoint(Space s, int x, int y) {
-            short elementCount = 0;
-            int sum = 0;
-            for (int xShift = -1; xShift <= 1; xShift++) {
-                for (int yShift = -1; yShift <= 1; yShift++) {
-                }
-            }
-
-            return sum / elementCount;
-        }
-
         public HashSet<Point> GetAccessibleNeighbours(int x, int y) {
             HashSet<Point> neighbours = new HashSet<Point>();
             for (int shiftX = -1; shiftX <= 1; shiftX++) {
@@ -90,6 +79,21 @@ namespace Slimulator {
             }
 
             return neighbours;
+        }
+
+        public bool IsInMiddleOfSlime(int x, int y) {
+            foreach (int shift in new []{-1, 1}){ 
+                if (GetPointType(x + shift, y) != PointType.Slime ||
+                 GetPointType(x, y + shift) != PointType.Slime) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public void GetOlder() {
+            for (int x = 0; x < _width; x++) for (int y = 0; y < _height; y++) points[x][y].GetOlder();
         }
 
         public void TextLog() {
