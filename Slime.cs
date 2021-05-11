@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO.IsolatedStorage;
 
 namespace Slimulator {
     public class Slime {
@@ -22,6 +23,28 @@ namespace Slimulator {
                 }
             }
 
+            return output;
+        }
+        
+        public static HashSet<Point> FindAllPossibleSlimesToPerish(Space s, HashSet<Point> slime) {
+            HashSet<Point> borderSlime = new HashSet<Point>();
+            foreach (Point p in slime) {
+                if (!s.IsInMiddleOfSlime(p.X, p.Y)) {
+                    borderSlime.Add(p);
+                }
+            }
+
+            int highestAge = -1;
+            HashSet<Point> output = new HashSet<Point>();
+            foreach (Point p in borderSlime) {
+                if (p.Age > highestAge) {
+                    output.Clear();
+                    output.Add(p);
+                    highestAge = p.Age;
+                } else if (p.Age == highestAge) {
+                    output.Add(p);
+                }
+            }
             return output;
         }
     }
