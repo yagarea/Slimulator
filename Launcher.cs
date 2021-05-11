@@ -4,10 +4,17 @@ using System.Drawing.Imaging;
 namespace Slimulator {
     static class Launcher {
         static void Main(string[] args) {
-            String[] testFiles = new[] {"/home/john/Projects/Slimulator/test_mazes/basic-maze.png", "/home/john/Projects/Slimulator/test_mazes/small-maze-food2.png"};
-            Space space = new Space(testFiles[0]);
-            Simulation sim = new Simulation(space, "eeeeej", @"/home/john/Projects/Slimulator/outputvideo.mp4");
-            for (int i = 0; i < 10000; i++) sim.Tick();
+            String[] testFiles = new[] {
+                "/home/john/Projects/Slimulator/test_mazes/maze100-food2.png", 
+                "/home/john/Projects/Slimulator/test_mazes/maze500-food2.png",
+                "/home/john/Projects/Slimulator/test_mazes/maze1000-food2.png"
+            };
+            Space space = new Space(testFiles[1]);
+            Simulation sim = new Simulation(space, 
+                @"/home/john/Projects/Slimulator/outputvideo.mp4",
+                50000,
+                ticksPerFrame: 20, frameRate:60);
+            sim.Start();
             sim.End(true);
         }
     }
