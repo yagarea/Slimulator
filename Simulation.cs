@@ -6,67 +6,65 @@ using System.Linq;
 
 namespace Slimulator {
     public class Simulation {
-        private Random randomizer;
-        private Space space;
+        private Random          _randomizer;
+        private Space           _space;
         private AnimationBuffer _animationBuffer;
-        private string outputVideoPath;
-        private int tickCount;
-        private int ticksPerFrame;
-        private int simTicks;
+        private string          _outputVideoPath;
+        private int             _tickCount;
+        private int             _ticksPerFrame;
+        private int             _simTicks;
 
-        public Simulation(Space space, string outputVideoPath, int simTicks, string seed = "HlenkaHelenka",
-            int ticksPerFrame = 3, int frameRate = 60) {
-            this.outputVideoPath = outputVideoPath;
-            this.space = space;
-            this.simTicks = simTicks;
-            randomizer = new Random(seed.GetHashCode());
+        public Simulation(Space space, string outputVideoPath, int simTicks, string seed = "HlenkaHelenka", int ticksPerFrame = 3, int frameRate = 60) {
+            _outputVideoPath = outputVideoPath;
+            _space           = space;
+            _simTicks        = simTicks;
+            _randomizer      = new Random(seed.GetHashCode());
             _animationBuffer = new AnimationBuffer(outputVideoPath, space.Height, space.Width, frameRate);
+            _tickCount       = 0;
+            _ticksPerFrame   = ticksPerFrame;
             _animationBuffer.AddFrame(space.ExportBitmap());
-            tickCount = 0;
-            this.ticksPerFrame = ticksPerFrame;
             Console.WriteLine($"Output file: {outputVideoPath}");
             Console.WriteLine(
-                $"      Specs: FPS: {frameRate} TFC:{simTicks / ticksPerFrame} TimeSpan:{(simTicks / ticksPerFrame) / frameRate}");
+                $"      Specs: FPS: {frameRate} TFC: {simTicks / ticksPerFrame} TimeSpan: {(simTicks / ticksPerFrame) / frameRate}");
         }
 
         private void Tick() {
-            HashSet<Point> currentSlime = Slime.FindAllSlime(space);
-            PickRandomPoint(Slime.FindAllPossiblePlacesToMove(space, currentSlime))
+            HashSet<Point> currentSlime = Slime.FindAllSlime(_space);
+            PickRandomPoint(Slime.FindAllPossiblePlacesToMove(_space, currentSlime))
                 .SetType(PointType.Slime);
-            PickRandomPoint(Slime.FindAllPossibleSlimesToPerish(space, currentSlime)).SetType(PointType.ExploredSpace);
-            if (tickCount % ticksPerFrame == 0) _animationBuffer.AddFrame(space.ExportBitmap());
-            tickCount++;
-            space.GetOlder();
+            PickRandomPoint(Slime.FindAllPossibleSlimesToPerish(_space, currentSlime)).SetType(PointType.ExploredSpace);
+            if ((_tickCount % _ticksPerFrame) == 0) _animationBuffer.AddFrame(_space.ExportBitmap());
+            _tickCount++;
+            _space.GetOlder();
             Console.SetCursorPosition(0, Console.CursorTop -1);
-            Console.WriteLine($"Tick: {tickCount}");
+            Console.WriteLine($"Tick: {_tickCount}");
         }
 
         public int Start() {
             Console.WriteLine("Simulation started\n");
-            while (tickCount < simTicks) {
+            while (_tickCount < _simTicks)
                 Tick();
-            }
 
-            return tickCount;
+            return _tickCount;
         }
 
         public void End(bool play = false) {
-            _animationBuffer.AddFrame(space.ExportBitmap());
+            _animationBuffer.AddFrame(_space.ExportBitmap());
             _animationBuffer.Export();
-            if (play) {
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.Arguments = Path.GetFullPath(outputVideoPath);
-                startInfo.FileName = "/usr/bin/vlc";
-                startInfo.CreateNoWindow = true;
-                using (Process p = Process.Start(startInfo)) {
-                    p.WaitForExit();
-                }
-            }
+            if (!play) return;
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                Arguments      = Path.GetFullPath(_outputVideoPath),
+                FileName       = "/usr/bin/vlc",
+                CreateNoWindow = true
+            };
+            using Process p = Process.Start(startInfo);
+            if (p == null) throw new Exception("Could not start VLC");
+            p.WaitForExit();
         }
 
         private Point PickRandomPoint(HashSet<Point> points) {
-            Point[] pointArray = points.ToArray();
-            return pointArray[randomizer.Next(pointArray.Length)];
+            return points.ElementAt(_randomizer.Next(points.Count));
         }
     }
 }
