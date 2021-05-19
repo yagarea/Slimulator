@@ -29,9 +29,7 @@ namespace Slimulator {
         public static HashSet<Point> FindAllPossibleSlimesToPerish(Space s, HashSet<Point> slime) {
             HashSet<Point> borderSlime = new HashSet<Point>();
             foreach (Point p in slime) {
-                if (!s.IsInMiddleOfSlime(p.X, p.Y)) {
-                    borderSlime.Add(p);
-                }
+                if (!s.IsInMiddleOfSlime(p.X, p.Y)) borderSlime.Add(p);
             }
 
             int highestAge = -1;
