@@ -4,29 +4,27 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
-namespace Slimulator {
+namespace Slimulator { 
     public class Simulation {
         private Random randomizer;
         private Space space;
         private AnimationBuffer _animationBuffer;
-        private string outputVideoPath;
+        private SimulationSettings settings;
         private int tickCount;
-        private int ticksPerFrame;
-        private int simTicks;
+        private string outputVideoPath;
 
-        public Simulation(Space space, string outputVideoPath, int simTicks, string seed = "HlenkaHelenka",
-            int ticksPerFrame = 3, int frameRate = 60) {
+        public Simulation(string inputFile, string outputVideoPath, SimulationSettings settings = null) {
+            this.settings = settings ?? SimulationSettings.DefaultSettings();
+            space = new Space(inputFile);
             this.outputVideoPath = outputVideoPath;
-            this.space = space;
-            this.simTicks = simTicks;
-            randomizer = new Random(seed.GetHashCode());
-            _animationBuffer = new AnimationBuffer(outputVideoPath, space.Height, space.Width, frameRate);
+            randomizer = new Random(settings.Seed.GetHashCode());
+            _animationBuffer = new AnimationBuffer(outputVideoPath, space.Height, space.Width, this.settings.FrameRate);
             _animationBuffer.AddFrame(space.ExportBitmap());
             tickCount = 0;
-            this.ticksPerFrame = ticksPerFrame;
-            Console.WriteLine($"Output file: {outputVideoPath}");
-            Console.WriteLine(
-                $"      Specs: FPS: {frameRate} TFC:{simTicks / ticksPerFrame} Time:{(simTicks / ticksPerFrame) / frameRate}s");
+            Console.WriteLine($"Output file:\t\t{outputVideoPath}");
+                Console.Write($"      Specs:\n FPS: {settings.FrameRate} ");
+            Console.Write($"TFC:{settings.TotalCountOfSimulationTicks / settings.TicksPerFrame}");
+            Console.WriteLine($"Time:{(settings.TotalCountOfSimulationTicks / settings.TicksPerFrame) / settings.FrameRate}s");
         }
 
         private void Tick() {
@@ -34,39 +32,35 @@ namespace Slimulator {
             PickRandomPoint(Slime.FindAllPossiblePlacesToMove(space, currentSlime))
                 .SetType(PointType.Slime);
             PickRandomPoint(Slime.FindAllPossibleSlimesToPerish(space, currentSlime)).SetType(PointType.Space);
-            if (tickCount % ticksPerFrame == 0) _animationBuffer.AddFrame(space.ExportBitmap());
+            if (tickCount % settings.TicksPerFrame == 0) _animationBuffer.AddFrame(space.ExportBitmap());
             tickCount++;
             space.GetOlder();
-            Console.SetCursorPosition(0, Console.CursorTop -1);
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
             Console.WriteLine($"Tick: {tickCount}");
         }
 
         public int Start() {
             Console.WriteLine("Simulation started\n");
-            while (tickCount < simTicks) {
+            while (tickCount < settings.TotalCountOfSimulationTicks) {
                 Tick();
             }
+
             return tickCount;
         }
 
         public void End(bool play = false) {
             _animationBuffer.AddFrame(space.ExportBitmap());
             _animationBuffer.Export();
-            if (play) {
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.Arguments = Path.GetFullPath(outputVideoPath);
-                startInfo.FileName = "/usr/bin/vlc";
-                startInfo.CreateNoWindow = true;
-                using (Process p = Process.Start(startInfo)) {
-                    p.WaitForExit();
-                }
-            }
+            if (!play) return;
+            ProcessStartInfo startInfo = new ProcessStartInfo {
+                Arguments = Path.GetFullPath(outputVideoPath), FileName = "/usr/bin/vlc", CreateNoWindow = true
+            };
+            using Process p = Process.Start(startInfo);
+            p?.WaitForExit();
         }
 
         private Point PickRandomPoint(HashSet<Point> points) {
-            Point[] pointArray = points.ToArray();
-            return pointArray[randomizer.Next(pointArray.Length)];
+            return points.ElementAt(randomizer.Next(points.Count));
         }
-        
     }
 }
