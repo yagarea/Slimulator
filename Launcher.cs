@@ -12,8 +12,9 @@ namespace Slimulator {
             Space space = new Space(testFiles[1]);
             Simulation sim = new Simulation(space, 
                 @"/home/john/Projects/Slimulator/outputvideo.mp4",
-                50000,
-                ticksPerFrame: 20, frameRate:60);
+                simTicks:50000,
+                ticksPerFrame: 20,
+                frameRate: 60);
             sim.Start();
             sim.End(true);
         }

@@ -1,18 +1,18 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 
 namespace Slimulator {
     public enum PointType {
         Wall,
-        UnexploredSpace,
-        ExploredSpace,
+        Space,
         Slime,
         Food
     };
 
     public class Point {
         private PointType _type;
-        private int _slimeAffinity;
+        private int slimeAffinity;
         private int x;
         private int y;
         private int age;
@@ -21,7 +21,7 @@ namespace Slimulator {
 
         public PointType Type => _type;
 
-        public int SlimeAffinity => _slimeAffinity;
+        public int SlimeAffinity => slimeAffinity;
 
         public int X => x;
 
@@ -34,17 +34,17 @@ namespace Slimulator {
             this.y = y;
             age = 0;
             switch (pt) {
-                case PointType.UnexploredSpace:
-                    _slimeAffinity = 10;
+                case PointType.Space:
+                    slimeAffinity = 10;
                     break;
                 case PointType.Wall:
-                    _slimeAffinity = -1;
+                    slimeAffinity = int.MinValue;
                     break;
                 case PointType.Food:
-                    _slimeAffinity = 1000;
+                    slimeAffinity = 1_000_000;
                     break;
                 case PointType.Slime:
-                    _slimeAffinity = 1;
+                    slimeAffinity = 0;
                     break;
             }
         }
@@ -54,7 +54,7 @@ namespace Slimulator {
             this.y = y;
             age = 0;
             _type = pt;
-            _slimeAffinity = lop;
+            slimeAffinity = lop;
         }
 
         public void SetType(PointType pt) {
@@ -62,7 +62,7 @@ namespace Slimulator {
             this.age = 0;
         }
         
-        public int GetSlimeAffinity() => _slimeAffinity;
+        public int GetSlimeAffinity() => slimeAffinity;
         public new PointType GetType() => _type;
 
         public void GetOlder() {

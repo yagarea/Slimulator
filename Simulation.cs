@@ -26,14 +26,14 @@ namespace Slimulator {
             this.ticksPerFrame = ticksPerFrame;
             Console.WriteLine($"Output file: {outputVideoPath}");
             Console.WriteLine(
-                $"      Specs: FPS: {frameRate} TFC:{simTicks / ticksPerFrame} TimeSpan:{(simTicks / ticksPerFrame) / frameRate}");
+                $"      Specs: FPS: {frameRate} TFC:{simTicks / ticksPerFrame} Time:{(simTicks / ticksPerFrame) / frameRate}s");
         }
 
         private void Tick() {
             HashSet<Point> currentSlime = Slime.FindAllSlime(space);
             PickRandomPoint(Slime.FindAllPossiblePlacesToMove(space, currentSlime))
                 .SetType(PointType.Slime);
-            PickRandomPoint(Slime.FindAllPossibleSlimesToPerish(space, currentSlime)).SetType(PointType.ExploredSpace);
+            PickRandomPoint(Slime.FindAllPossibleSlimesToPerish(space, currentSlime)).SetType(PointType.Space);
             if (tickCount % ticksPerFrame == 0) _animationBuffer.AddFrame(space.ExportBitmap());
             tickCount++;
             space.GetOlder();
@@ -46,7 +46,6 @@ namespace Slimulator {
             while (tickCount < simTicks) {
                 Tick();
             }
-
             return tickCount;
         }
 
@@ -68,5 +67,6 @@ namespace Slimulator {
             Point[] pointArray = points.ToArray();
             return pointArray[randomizer.Next(pointArray.Length)];
         }
+        
     }
 }
