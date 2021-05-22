@@ -3,16 +3,20 @@ namespace Slimulator {
         private int _totalCountOfSimulationTicks;
         private int _ticksPerFrame;
         private int _frameRate;
+        
         private string _seed;
-
+        private int _threadCount;
+        
         private int _slimeAffinityRadius;
         private int _slimeOccurenceAffinityMultiplier;
         private int _slimeTimeAffinityMultiplier;
 
         public SimulationSettings(
             int totalCountOfSimulationTicks = 70_000, 
-            int ticksPerFrame = 20, int frameRate = 60,
+            int ticksPerFrame = 20, 
+            int frameRate = 60,
             string seed = "HlenkaHelenka",
+            int threadCount=4,
             int slimeAffinityRadius = 10, 
             int slimeOccurenceAffinityMultiplier = 1,
             int slimeTimeAffinityMultiplier = 1) {
@@ -20,6 +24,7 @@ namespace Slimulator {
             _ticksPerFrame = ticksPerFrame;
             _frameRate = frameRate;
             _seed = seed;
+            _threadCount = threadCount;
             _slimeAffinityRadius = slimeAffinityRadius;
             _slimeOccurenceAffinityMultiplier = slimeOccurenceAffinityMultiplier;
             _slimeTimeAffinityMultiplier = slimeTimeAffinityMultiplier;
@@ -32,6 +37,7 @@ namespace Slimulator {
         public int SlimeAffinityRadius => _slimeAffinityRadius;
         public int SlimeOccurenceAffinityMultiplier => _slimeOccurenceAffinityMultiplier;
         public int SlimeTimeAffinityMultiplier => _slimeTimeAffinityMultiplier;
+        public int ThreadCount => _threadCount;
         public static SimulationSettings DefaultSettings() {
             return new();
         }
