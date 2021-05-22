@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
-
 namespace Slimulator {
     public enum PointType {
         Wall,
@@ -13,6 +9,12 @@ namespace Slimulator {
     public class Point {
         private PointType _type;
         private int slimeAffinity;
+
+        public int SlimeAffinity {
+            get => slimeAffinity;
+            set => slimeAffinity = value;
+        }
+
         private int x;
         private int y;
         private int age;
@@ -20,9 +22,7 @@ namespace Slimulator {
         public int Age => age;
 
         public PointType Type => _type;
-
-        public int SlimeAffinity => slimeAffinity;
-
+        
         public int X => x;
 
         public int Y => y;
