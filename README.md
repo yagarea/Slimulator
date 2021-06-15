@@ -93,15 +93,18 @@ I highly encourage you to experiment with your settings. If you discover somethi
 interesting feel free to contact me. I can assist you or add your discovery to this 
 repository.
 
-# Author
-This software was made by [Jan Černý](https://blackblog.cz/) for [MatSliz Research facility](http://slimoco.ning.com/group/matsliz). If you have any questions about project and slime mold research visit [] or contact me on my email address.
-
 ## Bugs and feature requests
 If vitness any bugs or unwanted behavior feel free to open an issue. I am open to your 
 feature requests too so do not be afraid to contact me or open issue.
 
 ## Contributions
 All pull requests are welcome. Just obey current codestyle.
+
+## Author
+This software was made by [Jan Černý](https://blackblog.cz/) for 
+[MatSliz Research facility](http://slimoco.ning.com/group/matsliz). If you have 
+any questions about project and slime mold research visit [] or contact me on my 
+email address.
 
 ## License
 This program is published under [GPL 3](https://github.com/yagarea/Slimulator/blob/master/LICENSE)
