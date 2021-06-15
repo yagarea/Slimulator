@@ -51,7 +51,7 @@ namespace Slimulator {
         }
 
         public Bitmap ExportBitmap() {
-            Bitmap outbm = new Bitmap(_height, _width);
+            Bitmap outbm = new Bitmap(_width, _height);
             for (int x = 0; x < _width; x++) {
                 for (int y = 0; y < _height; y++) outbm.SetPixel(x, y, ColorOfType(_points[x, y].GetType()));
             }
@@ -123,13 +123,12 @@ namespace Slimulator {
             return Math.Sqrt(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2));
         }
 
-        
 
-            public void AffinityLog() {
-                for (int x = 0; x < _width; x++) {
-                    for (int y = 0; y < _height; y++) Console.Write(_points[x, y].GetSlimeAffinity() + " ");
-                    Console.Write('\n');
-                }
+        public void AffinityLog() {
+            for (int x = 0; x < _width; x++) {
+                for (int y = 0; y < _height; y++) Console.Write(_points[x, y].GetSlimeAffinity() + " ");
+                Console.Write('\n');
             }
         }
     }
+}

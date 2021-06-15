@@ -58,8 +58,8 @@ namespace Slimulator {
         }
 
         public void SetType(PointType pt) {
-            this._type = pt;
-            this.age = 0;
+            _type = pt;
+            age = 0;
         }
         
         public int GetSlimeAffinity() => slimeAffinity;
