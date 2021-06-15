@@ -103,7 +103,7 @@ All pull requests are welcome. Just obey current codestyle.
 ## Author
 This software was made by [Jan Černý](https://blackblog.cz/) for 
 [MatSliz Research facility](http://slimoco.ning.com/group/matsliz). If you have 
-any questions about project and slime mould research visit [MatSliz officail page on Slime and mould collective](http://slimoco.ning.com/group/matsliz) or contact me on my email address.
+any questions about project and slime mould research visit [MatSliz official page on **Slime and mould collective**](http://slimoco.ning.com/group/matsliz) or contact me on my email address.
 
 ![MatSliz](http://storage.ning.com/topology/rest/1.0/file/get/8485133272?profile=RESIZE_180x180&crop=1%3A1&width=171)
 
