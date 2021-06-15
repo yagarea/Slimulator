@@ -43,6 +43,38 @@ The output of the example input above:
 | `slimeOccurenceAffinityMultiplier` | (int) | 1 | Multiplier of weight of affinity of immediate advantage of point based on its surroundings. |
 | `slimeTimeAffinityMultiplier` | (int) | 10 | Multiplier of weight of time on slime mold behavior (prioritizing unexplored and not recently visited places) | 
 
+## Usage
+
+### Wizard
+
+This project contains basic wizard which will guide you. All you need is to run:
+
+
+```bash
+dotnet run Launcher.cs
+```
+
+### As framework
+
+Here is minimal example usage of Slimulator as framework:
+
+```c#
+    static void Main(string[] args) {
+   		Simulation sim = new Simulation(@"path/to/input/file.png",
+                						@"path/of/output/file.mp4.mp4",
+                						SimulationSettings.QuickTest());
+        Console.WriteLine(sim.Start());
+    	sim.End(true);
+    }
+```
+
+In `SimullationSetting` class are following premade setups:
+- **Default** - Uses default values
+- **SlowMotion** - Very slow but detailed output 
+- **Fast** - Very fast video ideal for large mazes
+- **QuickTest** - Short video ideal for parameter tweaking
+- **Benchmark** - Outputs 30 frame video with 1000 ticks per frame
+
 # Author
 This software was made by [Jan Černý](https://blackblog.cz/) for [MatSliz Research facility](http://slimoco.ning.com/group/matsliz). If you have any questions about project and slime mold research visit [] or contact me on my email address.
 
