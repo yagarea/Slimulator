@@ -3,12 +3,11 @@
 Slimulator is a program you can use to simulate slime mold pathfinding and enviroment exploration.
 The input is an image of the environment and the output is a video of the simulated slime mold behavior.
 
-
 ## Input file
 Input file is any standard image format supported by the `FFMPEG` library. The recommended format is `PNG`.
 
 ### Legend
-- **Yellow** (`FFFF00`) - Slime mold
+- **Yellow** (`FFFF00`) - Slime mould
 - **Black** (`FFFFFF`) - Impenetrable wall
 - **Red** (`FF0000`) - Food
 - **Every other color** - Free space
@@ -35,13 +34,14 @@ The output of the example input above:
 | `seed`                        | (string) | "HlenkaHelenka" | Seed for the random number gerenerator.                                                                                                                                                                                                                             |
 | `threadCount`                 | (int)    | 1               | This program can be parallelized. This parameter sets the amount of threads used.                                                                                                                                                                                   |
 
-### Slime mold behavoir parameters
+### Slime mould behavoir parameters
 
 | Parameter                          | Type  | Default | description                                                                                                    |
 | ---                                | ---   | ---     | ---                                                                                                            |
 | `slimeAffinityRadius`              | (int) | 4       | The euclidean distance in which points affect nearby slime mold cells.                                         |
 | `slimeOccurenceAffinityMultiplier` | (int) | 1       | Multiplier of weight of affinity of immediate advantage of point based on its surroundings.                    |
 | `slimeTimeAffinityMultiplier`      | (int) | 10      | Multiplier of weight of time on slime mold behavior (prioritizing unexplored and not recently visited places). |
+
 
 ## Usage
 
@@ -103,8 +103,11 @@ All pull requests are welcome. Just follow current codestyle.
 ## Author
 This software was made by [Jan Černý](https://blackblog.cz/) for 
 [MatSliz Research facility](http://slimoco.ning.com/group/matsliz). If you have 
-any questions about the project and slime mold research visit [TODO](TODO) or contact me on my 
-email address.
+any questions about the project and slime mold research visit 
+[MatSliz official page on **Slime and mould collective**](http://slimoco.ning.com/group/matsliz) 
+or contact me on my email address.
+
+![MatSliz](http://storage.ning.com/topology/rest/1.0/file/get/8485133272?profile=RESIZE_180x180&crop=1%3A1&width=171)
 
 ## License
 This program is published under [GPL 3](https://github.com/yagarea/Slimulator/blob/master/LICENSE)
