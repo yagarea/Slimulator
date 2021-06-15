@@ -17,6 +17,12 @@ Example input:
 
 ![Example input](https://raw.githubusercontent.com/yagarea/Slimulator/master/testInputs/maze500-food2.png?raw=true)
 
+## Output
+
+The output of the example input above:
+
+![Example output](https://github.com/yagarea/Slimulator/blob/master/media/exampleOutput.gif?raw=true)
+
 ## Simulation parameters
 
 ### Technical parameters
@@ -38,7 +44,7 @@ Example input:
 | `slimeTimeAffinityMultiplier` | (int) | 10 | Multiplier of weight of time on slime mold behavior (prioritizing unexplored and not recently visited places) | 
 
 # Author
-This software was made by [Jan Černý](https://blackblog.cz/) for (MatSliz Research facility)[http://slimoco.ning.com/group/matsliz]. If you have any questions about project and slime mold research visit [] or contact me on my email address.
+This software was made by [Jan Černý](https://blackblog.cz/) for [MatSliz Research facility]([http://slimoco.ning.com/group/matsliz). If you have any questions about project and slime mold research visit [] or contact me on my email address.
 
 ## Contributions
 All pull requests are welcome.
