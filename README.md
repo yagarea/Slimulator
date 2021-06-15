@@ -1,4 +1,4 @@
-# Slimulator
+# ![Slimulator](https://github.com/yagarea/Slimulator/blob/master/media/logo.gif?raw=true)
 
 Slimulator is software you can use to simulate slime mold pathfinding and enviroment exploration.
 Input is image of enviroment and output is video of siulated slime mold behavior. 
@@ -15,7 +15,7 @@ Input file is any standard image format supported by `FFMPEG` library. Recomende
 
 Example input:
 
-![Example input]()
+![Example input](https://raw.githubusercontent.com/yagarea/Slimulator/master/testInputs/maze500-food2.png?raw=true)
 
 ## Simulation parameters
 
