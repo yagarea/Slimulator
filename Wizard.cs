@@ -1,10 +1,9 @@
 using System;
-using System.Runtime.CompilerServices;
 
 namespace Slimulator {
     public class Wizard {
-        public static Simulation setup() {
-            printLogo();
+        public static Simulation Setup() {
+            PrintLogo();
             Console.Write("Path of input file: ");
             String input = Console.ReadLine();
             String output = $@"/home/john/Projects/Slimulator/export/SlimulatorVideo-{DateTime.Now:HH-mm-ss}.mp4";
@@ -44,7 +43,7 @@ Choice (default 0): ");
             return new Simulation(input, output, ss);
         }
 
-        private static void printLogo() {
+        private static void PrintLogo() {
             Console.Write(@"                                                                                         
   _____ _ _                 _       _             
  / ____| (_)               | |     | |            
