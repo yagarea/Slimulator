@@ -7,66 +7,54 @@ namespace Slimulator {
     };
 
     public class Point {
-        private PointType _type;
-        private int slimeAffinity;
+        private int _slimeAffinity;
 
         public int SlimeAffinity {
-            get => slimeAffinity;
-            set => slimeAffinity = value;
+            get => _slimeAffinity;
+            set => _slimeAffinity = value;
         }
 
-        private int x;
-        private int y;
-        private int age;
+        public int Age { get; private set; }
 
-        public int Age => age;
+        private PointType Type { get; set; }
 
-        public PointType Type => _type;
-        
-        public int X => x;
+        public int X { get; }
 
-        public int Y => y;
+        public int Y { get; }
 
 
         public Point(int x, int y,PointType pt) {
-            _type = pt;
-            this.x = x;
-            this.y = y;
-            age = 0;
-            switch (pt) {
-                case PointType.Space:
-                    slimeAffinity = 10;
-                    break;
-                case PointType.Wall:
-                    slimeAffinity = int.MinValue;
-                    break;
-                case PointType.Food:
-                    slimeAffinity = 1_000_000;
-                    break;
-                case PointType.Slime:
-                    slimeAffinity = 0;
-                    break;
-            }
+            Type = pt;
+            this.X = x;
+            this.Y = y;
+            Age = 0;
+            _slimeAffinity = pt switch {
+                PointType.Space => 10,
+                PointType.Wall => int.MinValue,
+                PointType.Food => 1_000_000,
+                PointType.Slime => 0,
+                _ => _slimeAffinity
+            };
         }
 
         public Point(int x, int y, PointType pt, int lop) {
-            this.x = x;
-            this.y = y;
-            age = 0;
-            _type = pt;
-            slimeAffinity = lop;
+            this.X = x;
+            this.Y = y;
+            Age = 0;
+            Type = pt;
+            _slimeAffinity = lop;
         }
 
         public void SetType(PointType pt) {
-            _type = pt;
-            age = 0;
+            Type = pt;
+            Age = 0;
         }
         
-        public int GetSlimeAffinity() => slimeAffinity;
-        public new PointType GetType() => _type;
+        public int GetSlimeAffinity() => _slimeAffinity;
+        public new PointType GetType() => Type;
 
         public void GetOlder() {
-            age++;
+            Age++;
         }
         
     }
