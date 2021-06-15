@@ -44,7 +44,7 @@ The output of the example input above:
 | `slimeTimeAffinityMultiplier` | (int) | 10 | Multiplier of weight of time on slime mold behavior (prioritizing unexplored and not recently visited places) | 
 
 # Author
-This software was made by [Jan Černý](https://blackblog.cz/) for [MatSliz Research facility]([http://slimoco.ning.com/group/matsliz). If you have any questions about project and slime mold research visit [] or contact me on my email address.
+This software was made by [Jan Černý](https://blackblog.cz/) for [MatSliz Research facility](http://slimoco.ning.com/group/matsliz). If you have any questions about project and slime mold research visit [] or contact me on my email address.
 
 ## Contributions
 All pull requests are welcome.
