@@ -60,26 +60,26 @@ Here is minimal example usage of Slimulator as framework:
 
 ```c#
 static void Main(string[] args) {
-	Simulation sim = new Simulation(@"path/to/input/file.png",
-               				@"path/of/output/file.mp4.mp4",
-               				SimulationSettings.QuickTest());
+    Simulation sim = new Simulation(@"path/to/input/file.png",
+                                    @"path/of/output/file.mp4.mp4",
+                                    SimulationSettings.QuickTest());
     Console.WriteLine(sim.Start());
     sim.End(true);
 }
 ```
 
-In `SimullationSetting` class are following premade setups:
+In `SimulationSetting` class are following premade setups:
 - **Default** - Uses default values
 - **SlowMotion** - Very slow but detailed output 
 - **Fast** - Very fast video ideal for large mazes
 - **QuickTest** - Short video ideal for parameter tweaking
 - **Benchmark** - Outputs 30 frame video with 1000 ticks per frame
 
-You can still create your own setting by making yout own instance of `SimullationSetting` class:
+You can still create your own setting by making yout own instance of `SimulationSetting` class:
 
 ```c#
 SimulationSettings customSettings = new SimulationSettings(
-	totalCountOfSimulationTicks: 70000,
+    totalCountOfSimulationTicks: 70000,
     ticksPerFrame: 20,
     frameRate: 60,
     seed: "HlenkaHelenka",
@@ -89,11 +89,19 @@ SimulationSettings customSettings = new SimulationSettings(
     slimeTimeAffinityMultiplier: 10);
 ```
 
+I highly encourage you to experiment with your settings. If you discover something 
+interesting feel free to contact me. I can assist you or add your discovery to this 
+repository.
+
 # Author
 This software was made by [Jan Černý](https://blackblog.cz/) for [MatSliz Research facility](http://slimoco.ning.com/group/matsliz). If you have any questions about project and slime mold research visit [] or contact me on my email address.
 
+## Bugs and feature requests
+If vitness any bugs or unwanted behavior feel free to open an issue. I am open to your 
+feature requests too so do not be afraid to contact me or open issue.
+
 ## Contributions
-All pull requests are welcome.
+All pull requests are welcome. Just obey current codestyle.
 
 ## License
 This program is published under [GPL 3](https://github.com/yagarea/Slimulator/blob/master/LICENSE)
