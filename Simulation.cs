@@ -13,12 +13,12 @@ namespace Slimulator {
         private readonly SimulationSettings _settings;
         private int _tickCount;
         private readonly string _outputVideoPath;
-        private HashSet<Point> _pointsToMoveTo;
-        private HashSet<Point> _pointsToLeave;
+        private readonly HashSet<Point> _pointsToMoveTo;
+        private readonly HashSet<Point> _pointsToLeave;
         private int[][] _coordinatesOfSlimeAccessiblePoint;
 
         public Simulation(string inputFile, string outputVideoPath, SimulationSettings settings = null) {
-            _settings = settings ?? SimulationSettings.DefaultSettings();
+            _settings = settings ?? SimulationSettings.Default();
             _outputVideoPath = outputVideoPath;
             Console.WriteLine($"      Output file: {outputVideoPath}");
             _space = new Space(inputFile);
@@ -41,11 +41,12 @@ namespace Slimulator {
 
 
         public int Start() {
-            Console.WriteLine("Simulation started\n");
+            Console.WriteLine($"Simulation started: {DateTime.Now:HH:mm:ss}\n");
             while (_tickCount < _settings.TotalCountOfSimulationTicks) {
-                if(!Tick()) break;
+                if (!Tick()) break;
             }
 
+            Console.WriteLine($"Simulation ended: {DateTime.Now:HH:mm:ss}");
             return _tickCount;
         }
 
@@ -61,11 +62,12 @@ namespace Slimulator {
         }
 
         private bool Tick() {
-            _space = UpdateSpace(_space);
+            _space = UpdateSpace();
             if (_pointsToLeave.Count == 0 || _pointsToMoveTo.Count == 0) {
                 Console.WriteLine("Simulation: Reached dead point");
                 return false;
             }
+
             PickPoint(_pointsToMoveTo).SetType(PointType.Slime);
             PickPoint(_pointsToLeave).SetType(PointType.Space);
             _animationBuffer.AddFrame(_space.ExportBitmap());
@@ -97,26 +99,68 @@ namespace Slimulator {
             Console.WriteLine($"Slime accessible points: {count}");
         }
 
-        private Space UpdateSpace(Space currentSpace) {
+        private Space UpdateSpace() {
             _pointsToLeave.Clear();
             _pointsToMoveTo.Clear();
-            Space updatedSpace = new Space(currentSpace);
+            Space updatedSpace = new Space(_space);
 
-            int spaceThreadStrip = currentSpace.Width / _settings.ThreadCount;
-            Task[] tasks = new Task[_settings.ThreadCount];
-            
+            int spaceThreadStrip = _space.Width / _settings.ThreadCount;
+            Task<Tuple<HashSet<Point>, HashSet<Point>>>[] tasks =
+                new Task<Tuple<HashSet<Point>, HashSet<Point>>>[_settings.ThreadCount];
+
             for (int threadIndex = 0; threadIndex < _settings.ThreadCount - 1; threadIndex++) {
-                tasks[threadIndex] = Task.Factory.StartNew(() =>
-                        SpaceUpdatingThreadFunction(currentSpace, updatedSpace, threadIndex * spaceThreadStrip,
-                            (threadIndex + 1) * spaceThreadStrip));
+                tasks[threadIndex] = Task.Run(() => {
+                    return SpaceStripUpdatingTask(updatedSpace, threadIndex * spaceThreadStrip,
+                        (threadIndex + 1) * spaceThreadStrip);
+                });
             }
-            tasks[_settings.ThreadCount -1] = Task.Factory.StartNew(() =>
-                SpaceUpdatingThreadFunction(currentSpace, updatedSpace, (_settings.ThreadCount - 1) * spaceThreadStrip,
-                    _space.Width));
+
+            tasks[_settings.ThreadCount - 1] = Task.Run(() => {
+                return SpaceStripUpdatingTask(updatedSpace, (_settings.ThreadCount - 1) * spaceThreadStrip,
+                    _space.Width);
+            });
 
             Task.WaitAll(tasks);
+            foreach (Task<Tuple<HashSet<Point>, HashSet<Point>>> t in tasks) {
+                _pointsToMoveTo.UnionWith(t.Result.Item1);
+                _pointsToLeave.UnionWith(t.Result.Item2);
+            }
+
             return updatedSpace;
         }
+
+
+        private Tuple<HashSet<Point>, HashSet<Point>> SpaceStripUpdatingTask(Space updatedSpace, int stripStart,
+            int stripEnd) {
+            HashSet<Point> pointsToMoveTo = new HashSet<Point>();
+            HashSet<Point> pointsToLeave = new HashSet<Point>();
+            for (int x = stripStart; x < stripEnd; x++) {
+                foreach (int y in _coordinatesOfSlimeAccessiblePoint[x]) {
+                    Point currentPoint = _space.GetPoint(x, y);
+                    if (currentPoint.GetType() == PointType.Space) {
+                        updatedSpace.GetPoint(x, y).SlimeAffinity =
+                            (_settings.SlimeTimeAffinityMultiplier * currentPoint.Age) +
+                            (_settings.SlimeOccurenceAffinityMultiplier *
+                             OccurrenceInRadius(currentPoint, PointType.Space,
+                                 _settings.SlimeAffinityRadius));
+
+                        if (IsAvailableForMovingIn(currentPoint))
+                            pointsToMoveTo.Add(updatedSpace.GetPoint(x, y));
+                    }
+
+                    if (_space.GetPointType(x, y) == PointType.Slime) {
+                        currentPoint.SlimeAffinity = _settings.SlimeTimeAffinityMultiplier * currentPoint.Age;
+                        if (IsReadyToBeLeft(currentPoint))
+                            pointsToLeave.Add(updatedSpace.GetPoint(x, y));
+                    }
+
+                    currentPoint.GetOlder();
+                }
+            }
+
+            return new Tuple<HashSet<Point>, HashSet<Point>>(pointsToMoveTo, pointsToLeave);
+        }
+
 
         private bool IsAvailableForMovingIn(Point p) {
             foreach (int shift in new[] {-1, 1}) {
@@ -129,40 +173,16 @@ namespace Slimulator {
             return false;
         }
 
-        private bool IsReadyToBeLeft(Space s, Point p) {
+        private bool IsReadyToBeLeft(Point p) {
             foreach (int shift in new[] {-1, 1}) {
-                if (s.GetPointType(p.X + shift, p.Y) == PointType.Space ||
-                    s.GetPointType(p.X, p.Y + shift) == PointType.Space) {
+                if (_space.GetPointType(p.X + shift, p.Y) == PointType.Space ||
+                    _space.GetPointType(p.X, p.Y + shift) == PointType.Space) {
                     return true;
                 }
             }
 
             return false;
         }
-
-        private void SpaceUpdatingThreadFunction(Space currentSpace, Space updatedSpace, int stripStart, int stripEnd) {
-            for (int x = stripStart; x < stripEnd; x++) {
-                foreach (int y in _coordinatesOfSlimeAccessiblePoint[x]) {
-                    Point currentPoint = currentSpace.GetPoint(x, y);
-                    if (currentSpace.GetPointType(x, y) == PointType.Space) {
-                        updatedSpace.GetPoint(x, y).SlimeAffinity =
-                            (_settings.SlimeTimeAffinityMultiplier * currentPoint.Age) +
-                            (_settings.SlimeOccurenceAffinityMultiplier *
-                             OccurrenceInRadius(currentPoint, PointType.Space,
-                                 _settings.SlimeAffinityRadius));
-                        currentPoint.GetOlder();
-                        if (IsAvailableForMovingIn(currentPoint))
-                            _pointsToMoveTo.Add(updatedSpace.GetPoint(x, y));
-                    }
-
-                    if (currentSpace.GetPointType(x, y) == PointType.Slime) {
-                        if (IsReadyToBeLeft(currentSpace, currentPoint))
-                            _pointsToLeave.Add(updatedSpace.GetPoint(x, y));
-                    }
-                }
-            }
-        }
-
 
         private int OccurrenceInRadius(Point p, PointType type, int radius) {
             int occurrence = 0;
@@ -199,6 +219,40 @@ namespace Slimulator {
 
         private Point GetRandomPoint(IReadOnlyCollection<Point> points) {
             return points.ElementAt(_randomizer.Next(points.Count));
+        }
+
+        private bool wouldBreakIfRemoved(Point p) {
+            Boolean[,] surroundings = new bool[3, 3];
+            Tuple<int, int> randomSlimePoint = null;
+            int slimeCount = 0;
+            for (int shiftX = -1; shiftX <= 1; shiftX++) {
+                for (int shiftY = -1; shiftY <= 1; shiftY++) {
+                    if (_space.GetPointType(p.X + shiftX, p.Y + shiftY) == PointType.Slime) {
+                        randomSlimePoint ??= new Tuple<int, int>(1 + shiftX, 1 + shiftY);
+                        surroundings[1 + shiftX, 1 + shiftY] = true;
+                        slimeCount++;
+                    }
+                }
+            }
+
+            Queue<Tuple<int, int>> bsfQueue = new Queue<Tuple<int, int>>();
+            bsfQueue.Enqueue(randomSlimePoint);
+            while (bsfQueue.Count > 0) {
+                Tuple<int, int> currentPoint = bsfQueue.Dequeue();
+                for (int shiftX = -1; shiftX <= 1; shiftX++) {
+                    for (int shiftY = -1; shiftY <= 1; shiftY++) {
+                        if (-1 >= currentPoint.Item1 + shiftX || currentPoint.Item1 + shiftX >= 2 ||
+                            -1 >= currentPoint.Item2 + shiftY || currentPoint.Item2 + shiftY >= 2) continue;
+                        if (!surroundings[currentPoint.Item1 + shiftX, currentPoint.Item2 + shiftY]) continue;
+                        bsfQueue.Enqueue(new Tuple<int, int>(currentPoint.Item1 + shiftX, currentPoint.Item2 + shiftY));
+                    }
+                }
+
+                surroundings[currentPoint.Item1, currentPoint.Item2] = false;
+                slimeCount--;
+            }
+
+            return slimeCount != 0;
         }
     }
 }
