@@ -22,7 +22,7 @@ Example input:
 ### Technical parameters
 
 | Parameter         			| Type 	| Default | description |
-------------------------------------------------------
+--------------------------------|-------|---------|-----------------
 | `totalCountOfSimulationTicks` | (int) | 70000 | Amount "ticks" (iterations of simulations) |
 | `ticksPerFrame`				| (int) | 20 | Amount of ticks per one video frame. This paramater is used to control speed of simulation. Higher the number of ticks per frame higher the speed. Be aware that setting this parameter too high can result in loss of information about progress. |
 | `frameRate`					| (int) | 60 |Frames per second in output video. This parameter can be used to control speed of simulation too but it is not recomended because it can damage output video quality. |
@@ -31,8 +31,8 @@ Example input:
 
 ### Slime mold behavoir parameters
 
-| Parameter         | Type | description |
-------------------------------------------
+| Parameter         | Type | Default |  description |
+--------------------|------|---------|---------------
 | `slimeAffinityRadius` 		| (int) | 4 | Euklid distance in which have points effect on near slime mold cells. |
 | `slimeOccurenceAffinityMultiplier` | (int) | 1 | Multiplayer of weight of affinity of immediate advantage of point based on its surroundings.
 | `slimeTimeAffinityMultiplier` | (int) | 10 | Multiplyer of weight of time on slime mold behavoir (proritizing unexplored and not recently visited places) | 
