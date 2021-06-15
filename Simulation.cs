@@ -115,10 +115,9 @@ namespace Slimulator {
                 });
             }
 
-            tasks[_settings.ThreadCount - 1] = Task.Run(() => {
-                return SpaceStripUpdatingTask(updatedSpace, (_settings.ThreadCount - 1) * spaceThreadStrip,
-                    _space.Width);
-            });
+            tasks[_settings.ThreadCount - 1] = Task.Run(() => SpaceStripUpdatingTask(updatedSpace,
+                (_settings.ThreadCount - 1) * spaceThreadStrip,
+                _space.Width));
 
             Task.WaitAll(tasks);
             foreach (Task<Tuple<HashSet<Point>, HashSet<Point>>> t in tasks) {
@@ -221,7 +220,7 @@ namespace Slimulator {
             return points.ElementAt(_randomizer.Next(points.Count));
         }
 
-        private bool wouldBreakIfRemoved(Point p) {
+        private bool WouldBreakIfRemoved(Point p) {
             Boolean[,] surroundings = new bool[3, 3];
             Tuple<int, int> randomSlimePoint = null;
             int slimeCount = 0;
