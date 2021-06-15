@@ -59,13 +59,13 @@ dotnet run Launcher.cs
 Here is minimal example usage of Slimulator as framework:
 
 ```c#
-    static void Main(string[] args) {
-   		Simulation sim = new Simulation(@"path/to/input/file.png",
-                						@"path/of/output/file.mp4.mp4",
-                						SimulationSettings.QuickTest());
-        Console.WriteLine(sim.Start());
-    	sim.End(true);
-    }
+static void Main(string[] args) {
+	Simulation sim = new Simulation(@"path/to/input/file.png",
+               				@"path/of/output/file.mp4.mp4",
+               				SimulationSettings.QuickTest());
+    Console.WriteLine(sim.Start());
+    sim.End(true);
+}
 ```
 
 In `SimullationSetting` class are following premade setups:
@@ -74,6 +74,20 @@ In `SimullationSetting` class are following premade setups:
 - **Fast** - Very fast video ideal for large mazes
 - **QuickTest** - Short video ideal for parameter tweaking
 - **Benchmark** - Outputs 30 frame video with 1000 ticks per frame
+
+You can still create your own setting by making yout own instance of `SimullationSetting` class:
+
+```c#
+SimulationSettings customSettings = new SimulationSettings(
+	totalCountOfSimulationTicks: 70000,
+    ticksPerFrame: 20,
+    frameRate: 60,
+    seed: "HlenkaHelenka",
+    threadCount: 1,
+    slimeAffinityRadius: 4,
+    slimeOccurenceAffinityMultiplier: 1,
+    slimeTimeAffinityMultiplier: 10);
+```
 
 # Author
 This software was made by [Jan Černý](https://blackblog.cz/) for [MatSliz Research facility](http://slimoco.ning.com/group/matsliz). If you have any questions about project and slime mold research visit [] or contact me on my email address.
