@@ -18,7 +18,7 @@ Example input:
 
 ## Output
 
-The output of the example input above:
+The output of the example input above with default settings:
 
 ![Example output](https://github.com/yagarea/Slimulator/blob/master/media/exampleOutput.gif?raw=true)
 
@@ -42,13 +42,11 @@ The output of the example input above:
 | `slimeOccurenceAffinityMultiplier` | (int) | 1       | Multiplier of weight of affinity of immediate advantage of point based on its surroundings.                    |
 | `slimeTimeAffinityMultiplier`      | (int) | 10      | Multiplier of weight of time on slime mold behavior (prioritizing unexplored and not recently visited places). |
 
-
 ## Usage
 
 ### Wizard
 
 This project contains a basic wizard that will guide you. All you need is to run:
-
 
 ```bash
 dotnet run Launcher.cs
