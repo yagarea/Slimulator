@@ -59,7 +59,7 @@ Here is a minimal example usage of Slimulator as framework:
 ```c#
 static void Main(string[] args) {
     Simulation sim = new Simulation(@"path/to/input/file.png",
-                                    @"path/of/output/file.mp4.mp4",
+                                    @"path/of/output/file.mp4",
                                     SimulationSettings.QuickTest());
     Console.WriteLine(sim.Start());
     sim.End(true);
