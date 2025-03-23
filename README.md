@@ -7,7 +7,7 @@ The input is an image of the environment and the output is a video of the simula
 Input file is any standard image format supported by the `FFMPEG` library. The recommended format is `PNG`.
 
 ### Legend
-- **Yellow** (`FFFF00`) - Slime mould
+- **Yellow** (`FFFF00`) - Slime mold
 - **Black** (`FFFFFF`) - Impenetrable wall
 - **Red** (`FF0000`) - Food
 - **Every other color** - Free space
@@ -108,5 +108,5 @@ or contact me on my email address.
 ![MatSliz](http://storage.ning.com/topology/rest/1.0/file/get/8485133272?profile=RESIZE_180x180&crop=1%3A1&width=171)
 
 ## License
-This program is published under [GPL 3](https://github.com/yagarea/Slimulator/blob/master/LICENSE)
+This program is published under [GPLv3](https://github.com/yagarea/Slimulator/blob/master/LICENSE)
 
