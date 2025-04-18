@@ -91,6 +91,9 @@ I highly encourage you to experiment with your settings. If you discover somethi
 interesting, feel free to contact me. I can assist you or add your discovery to this 
 repository.
 
+## Dependencies
+- [FFMedia toolkit](https://github.com/radek-k/FFMediaToolkit) - requires [FFMPEG](https://ffmpeg.org/) installed on your system
+
 ## Bugs and feature requests
 If you discover any bugs or unwanted behavior, feel free to open an issue. I am open to your 
 feature requests too, so do not be afraid to contact me or open an issue.
