@@ -136,7 +136,7 @@ namespace Slimulator {
             for (int x = stripStart; x < stripEnd; x++) {
                 foreach (int y in _coordinatesOfSlimeAccessiblePoint[x]) {
                     Point currentPoint = _space.GetPoint(x, y);
-                    if (currentPoint.GetType() == PointType.Space) {
+                    if (currentPoint.GetType() == PointType.Space || currentPoint.GetType() == PointType.Food) {
                         updatedSpace.GetPoint(x, y).SlimeAffinity =
                             (_settings.SlimeTimeAffinityMultiplier * currentPoint.Age) +
                             (_settings.SlimeOccurenceAffinityMultiplier *
