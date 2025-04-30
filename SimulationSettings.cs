@@ -29,19 +29,19 @@ namespace Slimulator {
         public int ThreadCount { get; }
 
         public static SimulationSettings Default() {
-            return new();
+            return new SimulationSettings();
         }
 
         public static SimulationSettings SlowMotion() {
-            return new(totalCountOfSimulationTicks: 50_000, ticksPerFrame: 5);
+            return new SimulationSettings(totalCountOfSimulationTicks: 50_000, ticksPerFrame: 5);
         }
 
         public static SimulationSettings Fast() {
-            return new(totalCountOfSimulationTicks: 100_000, ticksPerFrame: 100);
+            return new SimulationSettings(totalCountOfSimulationTicks: 100_000, ticksPerFrame: 100);
         }
 
         public static SimulationSettings Benchmark() {
-            return new (totalCountOfSimulationTicks: 30_000, ticksPerFrame: 1000, frameRate: 1,
+            return new SimulationSettings(totalCountOfSimulationTicks: 30_000, ticksPerFrame: 1000, frameRate: 1,
                 threadCount: 1);
         }
 
