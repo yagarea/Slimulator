@@ -15,9 +15,9 @@ namespace Slimulator {
 
         private PointType TypeOfColor(Color c) {
             return c.R switch {
-                0 when c.G == 0 && c.B == 0 => PointType.Wall,
-                255 when c.G == 0 && c.B == 0 => PointType.Food,
-                255 when c.G == 255 && c.B == 0 => PointType.Slime,
+                0 when c is { G: 0, B: 0 } => PointType.Wall,
+                255 when c is { G: 0, B: 0 } => PointType.Food,
+                255 when c is { G: 255, B: 0 } => PointType.Slime,
                 _ => PointType.Space
             };
         }
@@ -87,10 +87,10 @@ namespace Slimulator {
             return neighbours;
         }
 
-        public void GetOlder() {
+        public void Age() {
             for (int x = 0; x < _width; x++)
             for (int y = 0; y < _height; y++)
-                _points[x, y].GetOlder();
+                _points[x, y].AgeStep();
         }
 
         public void TextLog() {

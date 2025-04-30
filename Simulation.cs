@@ -153,7 +153,7 @@ namespace Slimulator {
                             pointsToLeave.Add(updatedSpace.GetPoint(x, y));
                     }
 
-                    currentPoint.GetOlder();
+                    currentPoint.AgeStep();
                 }
             }
 

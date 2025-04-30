@@ -53,7 +53,7 @@ namespace Slimulator {
         public int GetSlimeAffinity() => _slimeAffinity;
         public new PointType GetType() => Type;
 
-        public void GetOlder() {
+        public void AgeStep() {
             Age++;
         }
         
