@@ -32,7 +32,7 @@ namespace Slimulator {
             _pointsToMoveTo = new HashSet<Point>();
             InitCoordinatesOfSlimeAccessiblePoint(_space);
             Console.WriteLine($"            Specs: FPS: {settings.FrameRate}");
-            string offset = "                   ";
+            const string offset = "                   ";
             Console.WriteLine($"{offset}TTC: {settings.TotalCountOfSimulationTicks}");
             Console.WriteLine($"{offset}TFC: {settings.TotalCountOfSimulationTicks / settings.TicksPerFrame}");
             Console.WriteLine(
@@ -78,7 +78,7 @@ namespace Slimulator {
             return true;
         }
 // Simulation control
-//---------------------------------------------------------------------------------------------------------------------        
+//-------------------------------------------------------------------------------------
 // Simulation logic
 
         private void InitCoordinatesOfSlimeAccessiblePoint(Space s) {
