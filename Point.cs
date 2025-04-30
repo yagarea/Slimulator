@@ -25,8 +25,8 @@ namespace Slimulator {
 
         public Point(int x, int y,PointType pt) {
             Type = pt;
-            this.X = x;
-            this.Y = y;
+            X = x;
+            Y = y;
             Age = 0;
             _slimeAffinity = pt switch {
                 PointType.Space => 10,
@@ -38,8 +38,8 @@ namespace Slimulator {
         }
 
         public Point(int x, int y, PointType pt, int lop) {
-            this.X = x;
-            this.Y = y;
+            X = x;
+            Y = y;
             Age = 0;
             Type = pt;
             _slimeAffinity = lop;
